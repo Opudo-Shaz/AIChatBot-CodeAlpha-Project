@@ -38,11 +38,11 @@ import opennlp.tools.util.TrainingParameters;
 import opennlp.tools.util.model.ModelUtil;
 
 /**
- * Custom chat bot or chat agent for automated chat replies for FAQs. It uses
+ * Custom chat agent for automated chat replies for FAQs. It uses
  * different features of Apache OpenNLP for understanding what user is asking
  * for. NLP is natural language processing.
  * 
- * @author itsallbinary
+ * @author Sharon Opudo
  *
  */
 public class OpenNLPChatBot {
@@ -50,7 +50,7 @@ public class OpenNLPChatBot {
 	private static final Map<String, String> questionAnswer = new HashMap<>();
 
 	/*
-	 * Define answers for each given category.
+	 * Defined answers for each given category.
 	 */
 	static {
 		questionAnswer.put("greeting", "Hello, how can I help you?");
@@ -87,7 +87,7 @@ public class OpenNLPChatBot {
 				// Separate words from each sentence using tokenizer.
 				String[] tokens = tokenizeSentence(sentence);
 
-				// Tag separated words with POS tags to understand their gramatical structure.
+				// Tag separated words with POS tags to understand their grammatical structure.
 				String[] posTags = detectPOSTags(tokens);
 
 				// Lemmatize each word so that its easy to categorize.
@@ -119,10 +119,6 @@ public class OpenNLPChatBot {
 
 	/**
 	 * Train categorizer model as per the category sample training data we created.
-	 * 
-	 * @return
-	 * @throws FileNotFoundException
-	 * @throws IOException
 	 */
 	private static DoccatModel trainCategorizerModel() throws FileNotFoundException, IOException {
 		// faq-categorize.txt is a custom training data with categories as per our chat
@@ -143,18 +139,13 @@ public class OpenNLPChatBot {
 
 	/**
 	 * Detect category using given token. Use categorize feature of Apache OpenNLP.
-	 * 
-	 * @param model
-	 * @param finalTokens
-	 * @return
-	 * @throws IOException
 	 */
 	private static String detectCategory(DoccatModel model, String[] finalTokens) throws IOException {
 
 		// Initialize document categorize tool
 		DocumentCategorizerME myCategorizer = new DocumentCategorizerME(model);
 
-		// Get best possible category.
+		// Get the best possible category.
 		double[] probabilitiesOfOutcomes = myCategorizer.categorize(finalTokens);
 		String category = myCategorizer.getBestCategory(probabilitiesOfOutcomes);
 		System.out.println("Category: " + category);
@@ -165,11 +156,6 @@ public class OpenNLPChatBot {
 
 	/**
 	 * Break data into sentences using sentence detection feature of Apache OpenNLP.
-	 * 
-	 * @param data
-	 * @return
-	 * @throws FileNotFoundException
-	 * @throws IOException
 	 */
 	private static String[] breakSentences(String data) throws FileNotFoundException, IOException {
 		// Better to read file once at start of program & store model in instance
@@ -188,11 +174,6 @@ public class OpenNLPChatBot {
 	/**
 	 * Break sentence into words & punctuation marks using tokenizer feature of
 	 * Apache OpenNLP.
-	 * 
-	 * @param sentence
-	 * @return
-	 * @throws FileNotFoundException
-	 * @throws IOException
 	 */
 	private static String[] tokenizeSentence(String sentence) throws FileNotFoundException, IOException {
 		// Better to read file once at start of program & store model in instance
@@ -214,10 +195,6 @@ public class OpenNLPChatBot {
 	/**
 	 * Find part-of-speech or POS tags of all tokens using POS tagger feature of
 	 * Apache OpenNLP.
-	 * 
-	 * @param tokens
-	 * @return
-	 * @throws IOException
 	 */
 	private static String[] detectPOSTags(String[] tokens) throws IOException {
 		// Better to read file once at start of program & store model in instance
@@ -239,12 +216,6 @@ public class OpenNLPChatBot {
 
 	/**
 	 * Find lemma of tokens using lemmatizer feature of Apache OpenNLP.
-	 * 
-	 * @param tokens
-	 * @param posTags
-	 * @return
-	 * @throws InvalidFormatException
-	 * @throws IOException
 	 */
 	private static String[] lemmatizeTokens(String[] tokens, String[] posTags)
 			throws InvalidFormatException, IOException {
